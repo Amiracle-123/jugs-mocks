@@ -173,6 +173,14 @@
   .card.full .list { margin-top: 12px; }
   .card.full .li { padding: 4px 0; }
   .card.full .more { padding-top: 7px; border-top: 1px solid rgba(255,248,232,.18); font-size: 11px; font-weight: 700; color: rgba(255,248,232,.6); }
+  /* The dark backing belongs to the words, not to the frame: it covers the
+     block whatever its height, fades out 90px above it, and runs to the
+     bottom edge. The old fixed scrim is kept only for the top title. */
+  .card .scrim { background: linear-gradient(180deg, rgba(31,26,20,.05) 0%, rgba(31,26,20,.6) 13%, rgba(31,26,20,0) 26%) !important; }
+  .card .words::before { content: ""; position: absolute; left: -18px; right: -18px; top: -90px; bottom: -70px; z-index: -1;
+    background: linear-gradient(180deg, rgba(31,26,20,0) 0%, rgba(31,26,20,.88) 90px, rgba(31,26,20,.96) 100%); }
+  .card .words { z-index: 2; }
+  .card .ph { isolation: isolate; }
 </style>
 </head>
 <body>
