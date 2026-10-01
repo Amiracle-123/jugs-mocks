@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Twelve real sessions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./app.css">
+<style>
+  :root { --ink: #1F1A14; --muted: #847B6B; --line: #E5DCC4; --font-display: "Gabarito", system-ui, -apple-system, sans-serif; --cream: #FFF8E8; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 1320px; margin: 0 auto; padding: 32px 20px 80px; }
+  h1 { font-family: var(--font-display); font-weight: 800; font-size: 28px; letter-spacing: -.03em; margin: 0 0 4px; line-height: 1; }
+  .lede { color: var(--muted); max-width: 640px; margin: 0 0 26px; font-size: 14px; }
+  .grid { display: flex; flex-wrap: wrap; gap: 22px; }
+  .opt { flex: none; width: 300px; }
+  .opt .cap { font-family: var(--font-display); font-weight: 700; font-size: 14px; margin: 10px 0 0; }
+  .opt .sub { color: var(--muted); font-size: 12px; }
+  /* holds: holdHTML's emission, small */
+  .hold.sm.hx { flex: 0 0 var(--hs); width: var(--hs); height: var(--hs); }
+  .hold.sm.hx .route.sm { flex: 0 0 var(--hs); width: var(--hs); height: var(--hs); font-size: calc(var(--hs) * .3); --rox: 3px; --roy: 4px; --rbw: 2px; }
+  .hold.sm.hx .badge-sent { width: 15px; height: 15px; top: -5px; right: -5px; }
+  .hold.sm.hx .badge-sent svg { width: 8px; height: 8px; }
+
+  /* ===== THE POSTER. 1080×1920, opaque. The lane's own wall photo is the
+     whole picture. The place is the headline, the city under it, the date
+     small. Then how much was climbed. Then ONE highlight if the session
+     earned one, printed as the same tape the send sticker uses, so the two
+     things people share are one family. On a quiet session the holds
+     climbed sit where the tape would, no ticks, the count already says how
+     many were sent. A paper foot with the lockup and the store line. */
+  .card { width: 270px; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; position: relative; background: var(--paper-2);
+    display: flex; flex-direction: column; box-shadow: 0 0 0 1px rgba(0,0,0,.12), 0 22px 44px -18px rgba(0,0,0,.4); }
+  .card .ph { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+  .card .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 30%; }
+  .card .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(31,26,20,.05) 0%, rgba(31,26,20,.55) 13%, rgba(31,26,20,0) 26%, rgba(31,26,20,0) 50%, rgba(31,26,20,.86) 64%, rgba(31,26,20,.97) 100%); }
+  .card .ph.plate { background: var(--ink); }
+  .card .ph.plate::before { content: ""; position: absolute; inset: 0; opacity: .75;
+    background-image: radial-gradient(circle, rgba(255,255,255,.16) 1.2px, transparent 1.5px); background-size: 7px 7px;
+    -webkit-mask: linear-gradient(128deg, transparent 12%, #000 78%); mask: linear-gradient(128deg, transparent 12%, #000 78%); }
+  .card .ph.plate .scrim { display: none; }
+  .card .who { position: absolute; top: 16px; left: 18px; display: flex; align-items: center; gap: 8px; color: var(--cream); font-size: 12.5px; font-weight: 700; z-index: 2; }
+  .card .who b { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg,#F08227,#E555A7); border: 2px solid var(--cream); }
+  .card .who .d { font-weight: 600; opacity: .7; margin-left: 2px; }
+  /* the words: "Climbing at Vertigo" up top. The count
+     of routes and boulders is the big figure. Then the one line the rule
+     wrote, named for what it is: an epic project sent, a big flash, a new
+     hardest. No date (the post carries one), no sends, no holds. */
+  .card .top { position: absolute; top: 58px; left: 18px; right: 18px; color: var(--cream); z-index: 2; text-shadow: 0 1px 2px rgba(0,0,0,.35); }
+  .card .top .hl { font-family: var(--font-display); font-weight: 800; font-size: 26px; letter-spacing: -.03em; line-height: .95; }
+  .card .top .ctx { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: rgba(255,248,232,.78); margin-top: 4px; }
+  .card .words { position: absolute; left: 18px; right: 18px; bottom: 62px; color: var(--cream); z-index: 2; }
+  .card .n { font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -.03em; line-height: 1.05; color: var(--cream); display: flex; gap: 12px; }
+  .card .n b { font-weight: 800; font-size: 28px; letter-spacing: -.04em; margin-right: 4px; }
+  /* the list: the hardest routes attempted, top three by grade. Small, so
+     the photo keeps the frame: the name with the discipline under it, the
+     outcome on the right in plain words. A rule puts a label over its row. */
+  .card .list { margin-top: 10px; }
+  .card .lt { font-size: 10.5px; font-weight: 700; color: rgba(255,248,232,.6); margin-bottom: 4px; }
+  .card .li { display: flex; align-items: center; gap: 9px; padding: 5px 0; border-top: 1px solid rgba(255,248,232,.18); }
+  .card .li .hold { flex: none; }
+  .card .li .mid { flex: none; }
+  .card .li .nm { font-family: var(--font-display); font-weight: 800; font-size: 13.5px; letter-spacing: -.02em; line-height: 1.05; white-space: nowrap; }
+  .card .li .ds { font-size: 9.5px; font-weight: 600; color: rgba(255,248,232,.6); margin-top: 1px; }
+  .card .li .out { flex: 1; min-width: 0; font-size: 11px; font-weight: 700; color: rgba(255,248,232,.85); text-align: right; line-height: 1.2; }
+  .card .li .out.s { color: var(--green-lit); }
+  .card .li .out.f { color: var(--yellow); }
+  .hold.sm.h34 { flex: 0 0 28px; width: 28px; height: 28px; }
+  .hold.sm.h34 .route.sm { flex: 0 0 28px; width: 28px; height: 28px; font-size: 8.5px; --rbw: 1.5px; }
+
+  .card { width: 300px; border-radius: 28px; }
+  .card .dim { position: absolute; top: 10px; right: 12px; z-index: 3; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #8a8273; }
+  #png-unused { background-color: #e9e4d8;
+    background-image: linear-gradient(45deg, #d9d2c2 25%, transparent 25%, transparent 75%, #d9d2c2 75%), linear-gradient(45deg, #d9d2c2 25%, transparent 25%, transparent 75%, #d9d2c2 75%);
+    background-size: 16px 16px; background-position: 0 0, 8px 8px; }
+  #png .ph { background: transparent; }
+
+  .story .card { position: absolute; inset: 0; width: 100%; border-radius: 0; box-shadow: none; }
+  .story .ig-bar, .story .ig-who, .story .ig-msg { z-index: 6; }
+  .story .drop { z-index: 7; }
+  .gap { height: 56px; }
+  /* THE CHART. Same frame as the poster, the list swapped for a bar per
+     whole grade, stacked by outcome: flash, send, try. Three colours, one
+     legend. Counts sit on the bars. */
+  .card .chart { margin-top: 14px; }
+  .card .bars { display: flex; align-items: flex-end; gap: 10px; height: 96px; padding: 0 2px; border-bottom: 1.5px solid rgba(255,248,232,.35); }
+  .card .bar { flex: 1; display: flex; flex-direction: column-reverse; justify-content: flex-start; height: 100%; }
+  .card .seg { flex: none; height: calc(var(--u) * var(--k)); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 10px; color: var(--ink); border: 1.5px solid var(--ink-plate); }
+  .card .seg + .seg { margin-bottom: -1.5px; }
+  .card .seg.fl { background: var(--yellow); }
+  .card .seg.se { background: var(--green-lit); }
+  .card .seg.tr { background: var(--cream); color: var(--ink); }
+  .card .axis { display: flex; gap: 10px; padding: 5px 2px 0; }
+  .card .axis div { flex: 1; text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 13px; color: var(--cream); }
+  .card .legend { display: flex; gap: 14px; margin-top: 10px; font-size: 11px; font-weight: 700; color: rgba(255,248,232,.85); }
+  .card .legend i { display: inline-block; width: 10px; height: 10px; border: 1.5px solid var(--ink-plate); margin-right: 5px; vertical-align: -1px; }
+  .card .legend .fl i { background: var(--yellow); } .card .legend .se i { background: var(--green-lit); } .card .legend .tr i { background: var(--cream); }
+  #png3-unused { background-color: #e9e4d8;
+    background-image: linear-gradient(45deg, #d9d2c2 25%, transparent 25%, transparent 75%, #d9d2c2 75%), linear-gradient(45deg, #d9d2c2 25%, transparent 25%, transparent 75%, #d9d2c2 75%);
+    background-size: 16px 16px; background-position: 0 0, 8px 8px; }
+  #png3 .ph { background: transparent; }
+  /* THE FULL LIST. Opaque, a photo of the gym itself behind it. Every
+     climb from the hardest down, six rows, the rest counted in one line. */
+  .card.full .scrim { background: linear-gradient(180deg, rgba(31,26,20,.05) 0%, rgba(31,26,20,.55) 13%, rgba(31,26,20,0) 26%, rgba(31,26,20,0) 40%, rgba(31,26,20,.9) 56%, rgba(31,26,20,.97) 100%); }
+  .card.full .list { margin-top: 12px; }
+  .card.full .li { padding: 4px 0; }
+  .card.full .more { padding-top: 7px; border-top: 1px solid rgba(255,248,232,.18); font-size: 11px; font-weight: 700; color: rgba(255,248,232,.6); }
+  /* The dark backing belongs to the words, not to the frame: it covers the
+     block whatever its height, fades out 90px above it, and runs to the
+     bottom edge. The old fixed scrim is kept only for the top title. */
+  .card .scrim { background: linear-gradient(180deg, rgba(31,26,20,.05) 0%, rgba(31,26,20,.6) 13%, rgba(31,26,20,0) 26%) !important; }
+  .card .words::before { content: ""; position: absolute; left: -18px; right: -18px; top: -90px; bottom: -70px; z-index: -1;
+    background: linear-gradient(180deg, rgba(31,26,20,0) 0%, rgba(31,26,20,.88) 90px, rgba(31,26,20,.96) 100%); }
+  .card .words { z-index: 2; }
+  .card .ph { isolation: isolate; }
+
+  .card { width: 300px; border-radius: 24px; }
+  .card .chart + .chart { margin-top: 14px; }
+  .card .ct { font-size: 10.5px; font-weight: 700; color: rgba(255,248,232,.6); margin-bottom: 4px; }
+  .card .seg.em { background: transparent; border: none; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Twelve real sessions</h1>
+  <p class="lede">Amir's own log up to 9 September, routes and walls read live, pushed through the chart rule: whole grades when that gives three bars or more, grade steps otherwise, an in-between grade folding up onto its harder rung. Each bar: flash, send, try.</p>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+  var PHOTOS = { vertigo: "https://rtwpyhnmnrdedzvmehwr.supabase.co/storage/v1/object/public/wall-photos/vertigo-ab-anchor-8-1788968189180.jpg",
+    k2: "https://rtwpyhnmnrdedzvmehwr.supabase.co/storage/v1/object/public/wall-photos/k2-bratislava-ab-lead-162-1789653473281.jpg" };
+  // [date, gym slug, gym name, count line, charts: [[label or null, mode, bars]]]; bars: [grade, flash, send, try]
+  var S = [
+    ["7 Aug",  "vertigo", "Vertigo", [[4,"routes"]], [[null,"steps",[["6-",0,3,0],["6",0,1,0]]]]],
+    ["11 Aug", "vertigo", "Vertigo", [[7,"routes"]], [[null,"whole",[["5",1,0,0],["6",1,2,0],["7",1,1,1]]]]],
+    ["13 Aug", "vertigo", "Vertigo", [[4,"routes"]], [[null,"steps",[["7-",0,1,1],["7",0,0,2]]]]],
+    ["17 Aug", "vertigo", "Vertigo", [[6,"routes"]], [[null,"steps",[["6+",0,0,1],["7-",0,0,2],["7",0,1,2]]]]],
+    ["19 Aug", "vertigo", "Vertigo", [[8,"routes"]], [[null,"whole",[["5",1,1,0],["6",1,2,1],["7",0,0,2]]]]],
+    ["20 Aug", "vertigo", "Vertigo", [[8,"routes"]], [[null,"whole",[["5",0,1,0],["6",1,2,1],["7",1,1,1]]]]],
+    ["24 Aug", "vertigo", "Vertigo", [[4,"routes"]], [[null,"whole",[["5",0,1,0],["6",0,1,0],["7",0,0,2]]]]],
+    ["29 Aug", "k2", "K2", [[8,"routes"]], [[null,"steps",[["6",0,1,0],["6+",0,2,0],["7-",1,0,1],["7",0,0,2],["7+",1,0,0]]]]],
+    ["30 Aug", "vertigo", "Vertigo", [[5,"routes"]], [[null,"steps",[["6",2,0,0],["6+",2,0,0],["7-",0,0,1]]]]],
+    ["1 Sep",  "vertigo", "Vertigo", [[4,"routes"]], [[null,"steps",[["7-",0,0,2],["7",0,1,1]]]]],
+    ["2 Sep",  "k2", "K2", [[5,"routes"],[9,"boulders"]], [["Routes","steps",[["6+",3,0,0],["7-",0,0,0],["7",1,1,0]]],["Boulders","whole",[["5B",4,0,0],["5C",2,0,0],["6A",0,0,3]]]]],
+    ["9 Sep",  "vertigo", "Vertigo", [[6,"routes"]], [[null,"steps",[["6",1,0,0],["6+",0,1,0],["7-",1,0,2],["7",0,0,1]]]]]
+  ];
+  function countHTML(n) { return '<div class="n">' + n.map(function (x) { return '<div><b>' + x[0] + '</b>' + x[1] + '</div>'; }).join('') + '</div>'; }
+  function chartHTML(label, bars, h) {
+    var max = Math.max.apply(null, bars.map(function (x) { return x[1] + x[2] + x[3]; })), u = Math.floor(h / max);
+    function seg(k, cls) { return k ? '<div class="seg ' + cls + '" style="--u:' + u + 'px;--k:' + k + '">' + k + '</div>' : ''; }
+    return '<div class="chart">' + (label ? '<div class="ct">' + label + '</div>' : '') +
+      '<div class="bars" style="height:' + h + 'px">' + bars.map(function (x) { return '<div class="bar">' + seg(x[1], "fl") + seg(x[2], "se") + seg(x[3], "tr") + '</div>'; }).join('') + '</div>' +
+      '<div class="axis">' + bars.map(function (x) { return '<div>' + x[0] + '</div>'; }).join('') + '</div></div>';
+  }
+  var LEGEND = '<div class="legend"><span class="fl"><i></i>Flash</span><span class="se"><i></i>Send</span><span class="tr"><i></i>Try</span></div>';
+  document.getElementById("grid").innerHTML = S.map(function (s) {
+    var h = s[4].length > 1 ? 64 : 96;
+    return '<div class="opt"><div class="card"><div class="ph"><img class="bg" src="' + PHOTOS[s[1]] + '" alt=""><div class="scrim"></div>' +
+      '<div class="top"><div class="hl">Climbing at ' + s[2] + '</div></div>' +
+      '<div class="words">' + countHTML(s[3]) + s[4].map(function (c) { return chartHTML(c[0], c[2], h); }).join('') + LEGEND + '</div></div></div>' +
+      '<div class="cap">' + s[0] + ' · ' + s[2] + '</div><div class="sub">' + s[4].map(function (c) { return (c[0] ? c[0].toLowerCase() + ': ' : '') + c[1] + ', ' + c[2].length + ' bars'; }).join(' · ') + '</div></div>';
+  }).join('');
+</script>
+</body>
+</html>
