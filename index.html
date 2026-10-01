@@ -151,15 +151,15 @@
      whole grade, stacked by outcome: flash, send, try. Three colours, one
      legend. Counts sit on the bars. */
   .card .chart { margin-top: 14px; }
-  .card .bars { display: flex; align-items: flex-end; gap: 5px; height: 96px; padding: 0 2px; border-bottom: 1.5px solid rgba(255,248,232,.35); }
+  .card .bars { display: flex; align-items: flex-end; gap: 10px; height: 96px; padding: 0 2px; border-bottom: 1.5px solid rgba(255,248,232,.35); }
   .card .bar { flex: 1; display: flex; flex-direction: column-reverse; justify-content: flex-start; height: 100%; }
   .card .seg { flex: none; height: calc(var(--u) * var(--k)); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 10px; color: var(--ink); border: 1.5px solid var(--ink-plate); }
   .card .seg + .seg { margin-bottom: -1.5px; }
   .card .seg.fl { background: var(--yellow); }
   .card .seg.se { background: var(--green-lit); }
   .card .seg.tr { background: var(--cream); color: var(--ink); }
-  .card .axis { display: flex; gap: 5px; padding: 5px 2px 0; }
-  .card .axis div { flex: 1; text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 11px; color: var(--cream); }
+  .card .axis { display: flex; gap: 10px; padding: 5px 2px 0; }
+  .card .axis div { flex: 1; text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 13px; color: var(--cream); }
   .card .legend { display: flex; gap: 14px; margin-top: 10px; font-size: 11px; font-weight: 700; color: rgba(255,248,232,.85); }
   .card .legend i { display: inline-block; width: 10px; height: 10px; border: 1.5px solid var(--ink-plate); margin-right: 5px; vertical-align: -1px; }
   .card .legend .fl i { background: var(--yellow); } .card .legend .se i { background: var(--green-lit); } .card .legend .tr i { background: var(--cream); }
@@ -334,12 +334,12 @@
   document.getElementById("drop2").addEventListener("click", function () { pick2.click(); });
   pick2.addEventListener("change", function () { useFile2(pick2.files[0]); });
 
-  // Every grade step from the lowest attempted to the highest, empty steps
-  // included, so the axis is the range the log defines. An in-between grade
-  // ("6+/7-") folds up onto its harder rung, the app's own rule. Per step:
-  // flash, send, try.
+  // Whole grades, the set chart's rule: 6-, 6 and 6+ are one bar, an
+  // in-between grade folds up onto its harder rung first. Steps are used
+  // only when whole grades would leave fewer than three bars (a session
+  // that lived inside one or two grades). Per bar: flash, send, try.
   var C = { gym: "Vertigo", n: [[10, "routes"]], photo: "vertigo",
-    buckets: [["5+", 2, 0, 0], ["6-", 1, 0, 0], ["6", 0, 1, 0], ["6+", 0, 1, 0], ["7-", 0, 1, 1], ["7", 0, 1, 0], ["7+", 0, 0, 0], ["8-", 0, 0, 1]] };
+    buckets: [["5", 2, 0, 0], ["6", 1, 2, 0], ["7", 0, 2, 1], ["8", 0, 0, 1]] };
   function chartHTML(b) {
     var max = Math.max.apply(null, b.map(function (x) { return x[1] + x[2] + x[3]; }));
     var u = Math.floor(96 / max);
