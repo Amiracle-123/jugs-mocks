@@ -122,12 +122,18 @@
   .card .chart + .chart { margin-top: 14px; }
   .card .ct { font-size: 10.5px; font-weight: 700; color: rgba(255,248,232,.6); margin-bottom: 4px; }
   .card .seg.em { background: transparent; border: none; }
+  /* one dot per climb, stacked on its grade: a unit chart, no scale */
+  .card .dots { display: flex; align-items: flex-end; gap: 10px; padding: 0 2px; border-bottom: 1.5px solid rgba(255,248,232,.35); min-height: 40px; }
+  .card .col { flex: 1; display: flex; flex-direction: column-reverse; align-items: center; gap: 4px; padding-bottom: 6px; }
+  .card .dot { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--ink-plate); }
+  .card .dot.fl { background: var(--yellow); } .card .dot.se { background: var(--green-lit); } .card .dot.tr { background: var(--cream); }
+  .card .axis div.empty { opacity: .45; }
 </style>
 </head>
 <body>
 <div class="page">
   <h1>Twelve real sessions</h1>
-  <p class="lede">Amir's own log up to 9 September, routes and walls read live, pushed through the chart rule: whole grades when that gives three bars or more, grade steps otherwise, an in-between grade folding up onto its harder rung. Each bar: flash, send, try.</p>
+  <p class="lede">Amir's own log up to 9 September, routes and walls read live, pushed through the chart rule: whole grades when that gives three bars or more, grade steps otherwise, an in-between grade folding up onto its harder rung. Each climb is one dot on its grade: flash, send or try.</p>
   <div class="grid" id="grid"></div>
 </div>
 <script>
@@ -149,19 +155,17 @@
     ["9 Sep",  "vertigo", "Vertigo", [[6,"routes"]], [[null,"steps",[["6",1,0,0],["6+",0,1,0],["7-",1,0,2],["7",0,0,1]]]]]
   ];
   function countHTML(n) { return '<div class="n">' + n.map(function (x) { return '<div><b>' + x[0] + '</b>' + x[1] + '</div>'; }).join('') + '</div>'; }
-  function chartHTML(label, bars, h) {
-    var max = Math.max.apply(null, bars.map(function (x) { return x[1] + x[2] + x[3]; })), u = Math.floor(h / max);
-    function seg(k, cls) { return k ? '<div class="seg ' + cls + '" style="--u:' + u + 'px;--k:' + k + '">' + k + '</div>' : ''; }
+  function chartHTML(label, bars) {
+    function dots(k, cls) { var o = ""; for (var i = 0; i < k; i++) o += '<div class="dot ' + cls + '"></div>'; return o; }
     return '<div class="chart">' + (label ? '<div class="ct">' + label + '</div>' : '') +
-      '<div class="bars" style="height:' + h + 'px">' + bars.map(function (x) { return '<div class="bar">' + seg(x[1], "fl") + seg(x[2], "se") + seg(x[3], "tr") + '</div>'; }).join('') + '</div>' +
-      '<div class="axis">' + bars.map(function (x) { return '<div>' + x[0] + '</div>'; }).join('') + '</div></div>';
+      '<div class="dots">' + bars.map(function (x) { return '<div class="col">' + dots(x[1], "fl") + dots(x[2], "se") + dots(x[3], "tr") + '</div>'; }).join('') + '</div>' +
+      '<div class="axis">' + bars.map(function (x) { return '<div' + (x[1] + x[2] + x[3] ? '' : ' class="empty"') + '>' + x[0] + '</div>'; }).join('') + '</div></div>';
   }
   var LEGEND = '<div class="legend"><span class="fl"><i></i>Flash</span><span class="se"><i></i>Send</span><span class="tr"><i></i>Try</span></div>';
   document.getElementById("grid").innerHTML = S.map(function (s) {
-    var h = s[4].length > 1 ? 64 : 96;
     return '<div class="opt"><div class="card"><div class="ph"><img class="bg" src="' + PHOTOS[s[1]] + '" alt=""><div class="scrim"></div>' +
       '<div class="top"><div class="hl">Climbing at ' + s[2] + '</div></div>' +
-      '<div class="words">' + countHTML(s[3]) + s[4].map(function (c) { return chartHTML(c[0], c[2], h); }).join('') + LEGEND + '</div></div></div>' +
+      '<div class="words">' + countHTML(s[3]) + s[4].map(function (c) { return chartHTML(c[0], c[2]); }).join('') + LEGEND + '</div></div></div>' +
       '<div class="cap">' + s[0] + ' · ' + s[2] + '</div><div class="sub">' + s[4].map(function (c) { return (c[0] ? c[0].toLowerCase() + ': ' : '') + c[1] + ', ' + c[2].length + ' bars'; }).join(' · ') + '</div></div>';
   }).join('');
 </script>
